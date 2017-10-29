@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
+    devtool: 'source-map',
     entry: {
         filename: './app.js'
     },
@@ -11,7 +12,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                exclude: /node_modules/,
+                exclude: /node_modules(?!\/webpack-dev-server)/,
                 loader: 'babel-loader',
                 query: {
                     presets: [
@@ -20,5 +21,12 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            compress: { warnings: false },
+            output: { comments: false },
+            sourceMap: true
+        })
+    ]
 }
